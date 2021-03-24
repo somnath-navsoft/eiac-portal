@@ -443,7 +443,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
   //onChangeScopeOption(getValues: any, secIndex: number, lineIndex: number, columnIndex: number, secName: string, type?:string) {
   onChangeScopeOption(getValues: any,secIndex: any, lineIndex: number, columnIndex: number, type?:string) {
-      //////console.log('@GET Options: ', getValues, " :: ",  lineIndex, " -- ", type, " -- ", columnIndex, " --sec--  ", secIndex);
+      console.log('@GET Options: ', getValues, " :: ",  lineIndex, " -- ", type, " -- ", columnIndex, " --sec--  ", secIndex);
 
       let selectValue: any;
       if(type === undefined){
@@ -453,7 +453,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         selectValue = getValues;
       }
       let url = this.Service.apiUatServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data;
-      ////console.log("option change value: ", url, " :: ", getValues, " -- ", selectValue, " -- Type: ", typeof selectValue);
+      console.log("option change value: ", url, " :: ", getValues, " -- ", selectValue, " -- Type: ", typeof selectValue);
       //this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,
       let jsonReq: any = {};
       if(typeof selectValue === 'number'){
@@ -471,7 +471,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.Service.put(url,jsonReq)
       .subscribe(
         record => {
-            //////console.log("Load scope SErvice Data: ", record, " -- ", this.dynamicScopeFieldColumns[secIndex],  " - ", this.dynamicScopeModel);
+            console.log("Load scope SErvice Data: ", record, " -- ", this.dynamicScopeFieldColumns[secIndex],  " - ", this.dynamicScopeModel);
             //get through array find key column
             if(record['scopeValue'].length == undefined){
               record['scopeValue'] = [];
@@ -480,16 +480,16 @@ export class InspectionBodiesFormComponent implements OnInit {
             let nextColumnIndex = theColumnIndex + 1;
             let totSecColumn    = this.dynamicScopeFieldColumns[secIndex].length;//this.dynamicScopeFieldColumns[secIndex].length;
             //////console.log(">>>Column Data: ", theColumnIndex, " -- ", nextColumnIndex, " -- ", totSecColumn, " -- ", );
-            ////console.log("select scope values: ", record['scopeValue'], " :: ", this.dynamicScopeFieldType[secIndex], " len: ", record['scopeValue'].length);
+            console.log("select scope values: ", record['scopeValue'], " :: ", this.dynamicScopeFieldType[secIndex], " len: ", record['scopeValue'].length);
 
             // if(this.dynamicScopeFieldType[secIndex].length && typeof this.dynamicScopeFieldType[secIndex][theColumnIndex] === 'object'){
             //       let colDef: string = this.dynamicScopeFieldType[secIndex][nextColumnIndex].defValue
             //       ////console.log("column values: ",theColumnIndex, " :: ",  colDef);
             // } 
 
-            //Auto selected for one item dropdown
+            //Auto selected for one item dropdown || && record['scopeValue'].length == 1
             if(record['scopeValue'].length > 0 && record['scopeValue'].length == 1){
-                ////console.log(">>>dep scope data: ", record['scopeValue']);
+                console.log(">>>dep scope data: ", record['scopeValue']);
                 let getSelValue = 0;
                 if(typeof record['scopeValue'][0] === 'object'){                  
                   getSelValue = record['scopeValue'][0].field_value.id;
@@ -507,11 +507,12 @@ export class InspectionBodiesFormComponent implements OnInit {
             // record['scopeValue'] = uniqueSet;
             if(nextColumnIndex > 0 && nextColumnIndex < totSecColumn){
                 //Get ridge of the values
-                //////console.log("field columns: ", this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][0].values] , " :: ");
-                let colDef: string = this.dynamicScopeFieldType[secIndex][nextColumnIndex].defValue                                                       
+                //console.log("field columns: ", this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][0].values] , " :: ");
+                let colDef: string = this.dynamicScopeFieldType[secIndex][nextColumnIndex].defValue;                
+                //console.log("@Select value: ", colDef);
 
-                if(colDef === "None" || colDef === null){
-                  ////console.log("#Get value....1: ", record['scopeValue'])
+                if(colDef === "None" || colDef === null || colDef == ''){
+                  //console.log("#Get value....1: ", record['scopeValue'])
                   //check duplicate scope values
                   let scopValues: any = record['scopeValue'];
                   var resultUniq = scopValues.reduce((unique, o) => {
@@ -520,10 +521,10 @@ export class InspectionBodiesFormComponent implements OnInit {
                     }
                     return unique;
                 },[]);
-                  //console.log(">>> Filter results:1 ",resultUniq);
-                  this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = resultUniq;//record['scopeValue'];
+                  //console.log(">>> Filter results:1 ",resultUniq, " -- ", record['scopeValue']);
+                  this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = resultUniq;//record['scopeValue'];////;
                 }
-                if(colDef != "None" && colDef != null){
+                if(colDef != "None" && colDef != null && colDef != ''){
                   let colValAr: any;                                                                                                                                                                                                                                    
                   let colTempAr: any = [];
                   colValAr = colDef.toString().split(',');                                                                                                                                                
@@ -543,7 +544,7 @@ export class InspectionBodiesFormComponent implements OnInit {
                 //this.dynamicScopeModel[secName].fieldLines[lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex].values] = record['scopeValue'];
                 ////////console.log(">>>>Model column: ", this.dynamicScopeModel);
             }
-          //console.log("@@@Updated Model Values: ", this.dynamicScopeModel);
+          console.log("@@@Updated Model Values: ",secIndex, " :: ", this.dynamicScopeModel);
         });
   }
 
