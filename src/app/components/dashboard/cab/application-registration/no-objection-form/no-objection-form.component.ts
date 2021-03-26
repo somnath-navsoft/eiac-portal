@@ -801,7 +801,8 @@ export class NoObjectionFormComponent implements OnInit {
                   }
                 });
                 this.step1Data.state = getData.data.state;  
-        
+                this.step1Data.physical_location_address = getData.data.physical_location_address;
+                //alert('...');
                 this.step1Data.city = getData.data.city;
                 
                 if(res['data'].saved_step  != null){
@@ -1010,7 +1011,7 @@ export class NoObjectionFormComponent implements OnInit {
   
   
                 //Step 6
-                if(res['data'].onBehalfApplicantDetails && res['data'].onBehalfApplicantDetails != null && res['data'].onBehalfApplicantDetails != undefined){
+              if(res['data'].onBehalfApplicantDetails && res['data'].onBehalfApplicantDetails != null && res['data'].onBehalfApplicantDetails != undefined){
                   let getAuthData = res['data'].onBehalfApplicantDetails;
                   ////console.log(">>> Auth data: ", getAuthData);
                   this.step6Data.organization_name        = getAuthData.organization_name;
