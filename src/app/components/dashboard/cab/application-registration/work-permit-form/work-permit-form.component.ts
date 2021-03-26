@@ -129,6 +129,8 @@ export class WorkPermitFormComponent implements OnInit {
   paymentDetailsChk:any;
   paypalSandboxToken: string = '';
   paymentMode: string = '';
+  searchCountryLists: any[]=[];
+
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,public sanitizer:DomSanitizer,private modalService: NgbModal) { 
     this.modalOptions = {
@@ -201,6 +203,21 @@ export class WorkPermitFormComponent implements OnInit {
     this.activitySection = {laboratory:false,inspection_body:false,certification_body:false};
     // this.authorizationList = {authorization_confirm1:false};
   }
+
+  getPlaceName()
+   {
+     if(typeof this.step1Data.physical_location_address != 'undefined')
+     {
+       this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.physical_location_address+'.json?access_token='+this.Service.mapboxToken+'','')
+         .subscribe(res => {
+             ////console.log(res['features']);
+             this.searchCountryLists = res['features'];
+           },
+           error => {
+           
+       })
+     }
+   }
 
   statelistById = async(country_id) => {
     this.allStateList = [];

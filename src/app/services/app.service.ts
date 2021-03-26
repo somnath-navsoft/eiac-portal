@@ -23,9 +23,10 @@ export class AppService {
   dashBoardPagination: any = 5;
   messagePagination: any = 10;
 
+  //Amit - 192.168.7.56
 
-  // public apiServerUrl         =   'http://192.168.7.28:8000/webservice';
-  // public apiRequestUrl        =   'http://192.168.7.28:8000/';
+  // public apiServerUrl         =   'http://192.168.7.56:8000/webservice';
+  // public apiRequestUrl        =   'http://192.168.7.56:8000/'; 
 
   public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
   public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
@@ -87,6 +88,10 @@ export class AppService {
 
     redirectDocumentPath(){
       let url: string = this._constant.documentPath;
+      window.open(url,'');
+    }
+    redirectDirectoryPath(){
+      let url: string = this._constant.directoryPath;
       window.open(url,'');
     }
 

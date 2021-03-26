@@ -6,6 +6,7 @@ import { ToastrService} from 'ngx-toastr';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {CustomModalComponent} from 'src/app/components/utility/custom-modal/custom-modal.component';
 import { Observable, Subscription } from 'rxjs';
+import { HttpClient } from "@angular/common/http";
 import { Router } from '@angular/router';
 import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
@@ -55,7 +56,7 @@ export class AccountsComponent implements OnInit {
 
   acountsType: any[] = [];
 
-  constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, private exportAsService: ExportAsService,
+  constructor(private _service: AppService, private http: HttpClient, private _constant: Constants, public _toaster: ToastrService, private exportAsService: ExportAsService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent,public router: Router) { }
 
   ngOnInit() {
@@ -297,7 +298,7 @@ export class AccountsComponent implements OnInit {
                         getDetails['application_status'] = (allRecords[key].accr_status == null) ? 'pending' : allRecords[key].accr_status;
 
                         getDetails['cabDetails'] = allRecords[key].cabDetails;
-
+                        getDetails['appTypes'] = allRecords[key].applicationType;
 
                         //getDetails['cabName'] = allRecords[key].cabDetails != 'N/A' ? allRecords[key].cabDetails.cab_name : allRecords[key].organization_name;
                         //getDetails['cabCode'] = allRecords[key].cabDetails.cab_code;
@@ -438,7 +439,7 @@ export class AccountsComponent implements OnInit {
           //this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
           this.voucherFile.append('application_number',this.voucherSentData['application_number']);
 
-          //return;
+          //return; 
 
           this.subscriptions.push(this._trainerService.accountTypeSave((this.voucherFile))
           .subscribe(
@@ -467,9 +468,25 @@ export class AccountsComponent implements OnInit {
      }
   }
 
+  getTrainingType = async(url: string) =>{
+    let promise: any =  await new Promise((resolve, reject) => {
+      let apiURL = url;
+      this.http.get(apiURL)
+        .toPromise()
+        .then(
+          rec => { // Success
+            resolve(rec);
+          },
+          error => {
+            reject(error);
+          }
+        )
+    });
+    return promise;
+  }
 
 
-  loadPageData() {
+  loadPageData = async() => {
     this.loader = false;
     this.subscriptions.push(this._trainerService.getAccountLists()
       .subscribe(
@@ -497,11 +514,29 @@ export class AccountsComponent implements OnInit {
 
               getDetails['cabDetails'] = allRecords[key].cabDetails;
               getDetails['orgName'] = allRecords[key].organization_name;
+              getDetails['form_meta'] = allRecords[key].form_meta;
+              //
+              getDetails['trainingType'] = allRecords[key].training_form_type;
+              //getDetails['regType'] = allRecords[key].training_form_type;
               //getDetails['cabName'] = allRecords[key].cabDetails != 'NA' ? allRecords[key].cabDetails.cab_name : allRecords[key].organization_name;
               //getDetails['cabCode'] = allRecords[key].cabDetails.cab_code;
-
-
+              //training_request_id
+              if(allRecords[key].applicationType == 'training_request_id'){
+                console.log("@calling....1");
+                let appID: number = allRecords[key].id;
+                let url = this._service.apiServerUrl+"/"+'training-details-show/'+appID;
+                let promiseResult: any = this.getTrainingType(url);
+                if(promiseResult != undefined){
+                  promiseResult.then((data) => {
+                    let record: any = data;
+                    //console.log('@Result Data', record);
+                    getDetails['appType'] = record.data.training_form_type;
+                  })
+                }
+              }else{
+              //console.log("@calling....2:: ", allRecords[key].form_meta);
               getDetails['appType'] = allRecords[key].form_meta;
+              }
               getDetails['totalPayment'] = allRecords[key].paymentDetails.length;
               getDetails['vouncherNumb'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails[0].voucher_no != null) ? allRecords[key].paymentDetails[0].voucher_no : 'NA';
               getDetails['appAmount'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails[0].amount != null) ? allRecords[key].paymentDetails[0].amount : 0;

@@ -12,6 +12,7 @@ export class Constants{
 	public mediaPath: string 				= 'https://uat-service.eiac.gov.ae';
 
 	public documentPath: string 			= 'https://uat.eiac.gov.ae/documents/publications';
+	public directoryPath: string 			= 'https://uat.eiac.gov.ae/directory';
 
 	//trainerAPI: '/trainer',
 	//all_services: this.apiUrl + 'service_page/', 

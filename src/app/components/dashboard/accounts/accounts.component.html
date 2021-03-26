@@ -330,11 +330,11 @@
                                 <td>{{item.createdDate | date:'dd-MMM-yyyy'}}</td>
                                 <td>
                                     <!-- @{{userType}} == {{item.cabDetails}} -->
+                                    <!-- reg_application_id | accreditation_id | training_request_id -->
                                     <ng-container *ngIf="userType == 'candidate'">
                                         {{item.orgName}}
                                     </ng-container>
                                     <ng-container *ngIf="userType != 'candidate' && item.cabDetails != undefined && item.cabDetails != 'NA'">
-                                        
                                         {{item.cabDetails[0].cab_name}}
                                     </ng-container>
                                     <ng-container *ngIf="userType != 'candidate' && item.cabDetails != undefined && item.cabDetails == 'NA'">
@@ -383,12 +383,14 @@
                                         <span *ngIf="item.appType == 'halal_conformity_bodies'">Halal Conformity Bodies</span>
                                         <span *ngIf="item.appType == 'certification_bodies'">Certification Bodies</span>
                                         <span *ngIf="item.appType == 'pt_providers'">Proficiency Testing Providers</span>
+                                        <span *ngIf="item.appType == 'no_objection'">No Objection Certificate</span>
+                                        <span *ngIf="item.appType == 'work_activity'">Work Activity Permit</span>
+                                        <span *ngIf="item.appType == 'inprimise'">In Premise</span>
+                                        <span *ngIf="item.appType == 'public_training'">Public Training</span>
                                     </ng-container>
-
                                     <ng-container *ngIf="userType != 'candidate' && (!item.appType || item.appType == '' || item.appType == null)">
                                         N/A
                                     </ng-container>
-
                                     <ng-container *ngIf="userType == 'candidate'">
                                         Trainer
                                     </ng-container>
@@ -412,9 +414,19 @@
                                     </td>
                                 </ng-container>
                                 <ng-container *ngIf="!item.application_fees">
-                                    <td>0.00</td>
+                                    <ng-container *ngIf="item.appTypes == 'accreditation_id'">
+                                        <td></td>
+                                        <td></td>
+                                        <td><span></span></td>
+                                    </ng-container>
+                                    <ng-container *ngIf="item.appTypes == 'reg_application_id' || item.appTypes == 'training_request_id'">
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td><span>N/A</span></td>
+                                    </ng-container>
+                                    <!-- <td>0.00</td>
                                     <td>N/A</td>
-                                    <td><span>N/A</span></td>
+                                    <td><span>N/A</span></td> -->
                                 </ng-container>
 
                                 <ng-container *ngIf="item.prelim_visit">
@@ -426,9 +438,19 @@
                                     </td>
                                 </ng-container>
                                 <ng-container *ngIf="!item.prelim_visit">
-                                    <td>0.00</td>
+                                    <ng-container *ngIf="item.appTypes == 'accreditation_id'">
+                                        <td></td>
+                                        <td></td>
+                                        <td><span></span></td>
+                                    </ng-container>
+                                    <ng-container *ngIf="item.appTypes == 'reg_application_id' || item.appTypes == 'training_request_id'">
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td><span>N/A</span></td>
+                                    </ng-container>
+                                    <!-- <td>0.00</td>
                                     <td>N/A</td>
-                                    <td><span>N/A</span></td>
+                                    <td><span>N/A</span></td> -->
                                 </ng-container>
 
                                 <ng-container *ngIf="item.document_review">
@@ -441,9 +463,19 @@
                                     </td>
                                 </ng-container>
                                 <ng-container *ngIf="!item.document_review">
-                                    <td>0.00</td>
+                                    <ng-container *ngIf="item.appTypes == 'accreditation_id'">
+                                        <td></td>
+                                        <td></td>
+                                        <td><span></span></td>
+                                    </ng-container>
+                                    <ng-container *ngIf="item.appTypes == 'reg_application_id' || item.appTypes == 'training_request_id'">
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td><span>N/A</span></td>
+                                    </ng-container>
+                                    <!-- <td>0.00</td>
                                     <td>N/A</td>
-                                    <td><span>N/A</span></td>
+                                    <td><span>N/A</span></td> -->
                                 </ng-container>
 
                                 <ng-container *ngIf="item.assessment">
@@ -456,9 +488,19 @@
                                     </td>
                                 </ng-container>
                                 <ng-container *ngIf="!item.assessment">
-                                    <td>0.00</td>
+                                    <ng-container *ngIf="item.appTypes == 'accreditation_id'">
+                                        <td></td>
+                                        <td></td>
+                                        <td><span></span></td>
+                                    </ng-container>
+                                    <ng-container *ngIf="item.appTypes == 'reg_application_id' || item.appTypes == 'training_request_id'">
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td><span>N/A</span></td>
+                                    </ng-container>
+                                    <!-- <td>0.00</td>
                                     <td>N/A</td>
-                                    <td><span>N/A</span></td>
+                                    <td><span>N/A</span></td> -->
                                 </ng-container>
 
                                 <ng-container *ngIf="item.certification">
@@ -471,9 +513,19 @@
                                     </td>
                                 </ng-container>
                                 <ng-container *ngIf="!item.certification">
-                                    <td>0.00</td>
+                                    <ng-container *ngIf="item.appTypes == 'accreditation_id'">
+                                        <td></td>
+                                        <td></td>
+                                        <td><span></span></td>
+                                    </ng-container>
+                                    <ng-container *ngIf="item.appTypes == 'reg_application_id' || item.appTypes == 'training_request_id'">
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td><span>N/A</span></td>
+                                    </ng-container>
+                                    <!-- <td>0.00</td>
                                     <td>N/A</td>
-                                    <td><span>N/A</span></td>
+                                    <td><span>N/A</span></td> -->
                                 </ng-container>
                                 <td class="fnt-clr">
                                     <a *ngIf="userType == 'cab_client' && item.totalPayment < 4" href="javascript:void(0)" routerLink="/dashboard/account-upload/{{item.appID}}">
@@ -485,7 +537,9 @@
                                     </a>
                                     <!-- item.application_fees.id -->
                                     <a *ngIf="userType == 'operations'" href="javascript:void(0)" (click)="open(courseVoucher, item.appID, item.appNo,item.appTypes)">
-                                        <span class="icon-wallet"></span>
+                                        <ng-container *ngIf="item.appTypes == 'accreditation_id'">
+                                            <span class="icon-wallet"></span>
+                                        </ng-container>                                        
                                     </a>
                                 </td>
                             </tr>
