@@ -320,9 +320,10 @@ export class AccountsComponent implements OnInit {
 
                         this.accountsData.push(getDetails);
                       }
-                    this.pageTotal = this.accountsData.length;
+                this.pageTotal = this.accountsData.length;
                 });
                 console.log(">>>.Accounts Data: ", this.accountsData);
+                this.sortedList(this.accountsData,'createdDate',true);
                 }
               if(data != undefined && typeof data === 'object' && data.records.length == 0){
                 this.accountsData = data.records;
@@ -552,9 +553,10 @@ export class AccountsComponent implements OnInit {
             }
             // this.accountsData.push(getDetails);
           })
-         console.log(this.accountsData,'result');
+          //console.log(this.accountsData,'result');
 
-
+          this.sortedList(this.accountsData,'createdDate',true);
+          //console.log(this.accountsData,' After Order');
           // this.accountsData = data.records;
           // dataRec = data.records;
           this.pageTotal = this.accountsData.length;
