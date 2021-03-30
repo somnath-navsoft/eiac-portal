@@ -498,9 +498,9 @@ loadScopeDataHalal(){
     this.subscriptions.push(this._trainerService.trainerAccredDetailsServtrainerAccredDetailsServ(this.routeId)
       .subscribe(
         result => {
-          console.log(result, "@Get Data");
+          //console.log(result, "@Get Data");
           //return;
-          this.loader = true;
+          this.loader = true; 
           let getData: any = result;
           this.serviceDetail = result['data'];
           // var ilaCheckbox = this.serviceDetail.authorization_list;
