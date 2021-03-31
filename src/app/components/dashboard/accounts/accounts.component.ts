@@ -289,8 +289,52 @@ export class AccountsComponent implements OnInit {
                       if(allRecords[key].paymentDetails != "NA") {
                         var getDetails = {};
 
-                        console.log(">>>");
+                        console.log(">>> ", allRecords[key]);
 
+                        getDetails['appNo'] = (allRecords[key].application_number != null)  ? allRecords[key].application_number : allRecords[key].id;//allRecords[key].id;
+                        getDetails['appID'] = allRecords[key].id;
+                        getDetails['appTypes'] = allRecords[key].applicationType;
+                        getDetails['createdDate'] = allRecords[key].created;
+                        getDetails['form_meta'] = allRecords[key].form_meta;
+                        getDetails['payment_details'] = allRecords[key].paymentDetails;
+                        getDetails['application_status'] = (allRecords[key].accr_status == null) ? 'pending' : allRecords[key].accr_status;
+
+                        getDetails['cabDetails'] = allRecords[key].cabDetails;
+                        getDetails['orgName'] = allRecords[key].organization_name;
+                        getDetails['form_meta'] = allRecords[key].form_meta;
+                        //
+                        getDetails['trainingType'] = allRecords[key].training_form_type;
+                        //training_request_id
+                        if(allRecords[key].applicationType == 'training_request_id'){
+                          console.log("@calling....1");
+                          let appID: number = allRecords[key].id;
+                          let url = this._service.apiServerUrl+"/"+'training-details-show/'+appID;
+                          let promiseResult: any = this.getTrainingType(url);
+                          if(promiseResult != undefined){
+                            promiseResult.then((data) => {
+                              let record: any = data;
+                              //console.log('@Result Data', record);
+                              getDetails['appType'] = record.data.training_form_type;
+                            })
+                          }
+                        }else{
+                        //console.log("@calling....2:: ", allRecords[key].form_meta);
+                        getDetails['appType'] = allRecords[key].form_meta;
+                        }
+                        getDetails['totalPayment'] = allRecords[key].paymentDetails.length;
+                        getDetails['vouncherNumb'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails[0].voucher_no != null) ? allRecords[key].paymentDetails[0].voucher_no : 'NA';
+                        getDetails['appAmount'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails[0].amount != null) ? allRecords[key].paymentDetails[0].amount : 0;
+                        getDetails['payAmount'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails[0].amount != null) ? allRecords[key].paymentDetails[0].amount : 0;
+                        
+                        getDetails['prelim_visit'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'prelim_visit');
+                        getDetails['application_fees'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'application_fees');
+                        getDetails['document_review'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'document_review');
+                        getDetails['assessment'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'assessment');
+                        getDetails['certification'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'certification');
+
+                        this.accountsData.push(getDetails);
+
+                        /*
                         getDetails['appNo'] = allRecords[key].id;
                         getDetails['createdDate'] = allRecords[key].created;
                         getDetails['form_meta'] = allRecords[key].form_meta;
@@ -319,11 +363,12 @@ export class AccountsComponent implements OnInit {
                         console.log("@...", getDetails);
 
                         this.accountsData.push(getDetails);
+                        */
                       }
                 this.pageTotal = this.accountsData.length;
                 });
                 console.log(">>>.Accounts Data: ", this.accountsData);
-                this.sortedList(this.accountsData,'createdDate',true);
+                //this.sortedList(this.accountsData,'createdDate',true);
                 }
               if(data != undefined && typeof data === 'object' && data.records.length == 0){
                 this.accountsData = data.records;
