@@ -12,6 +12,7 @@ export class SidebarComponent implements OnInit {
 
   dashMenu: any[]   = []; 
   userType: string  = '';
+  userID: number = 0;
   userEmail:any;
   currentTitle:any;
   isdDynamicsopenClose:any;
@@ -23,8 +24,9 @@ export class SidebarComponent implements OnInit {
               private _router: Router) { }
 
   ngOnInit() {
-    this.userEmail = localStorage.getItem('email');
-    this.userType = localStorage.getItem('type');
+    this.userEmail  = localStorage.getItem('email');
+    this.userType   = localStorage.getItem('type');
+    this.userID     = parseInt(localStorage.getItem('userId'));
     this._service.getUserType();
     // this.userType = this._constants.logType;
    
@@ -33,7 +35,15 @@ export class SidebarComponent implements OnInit {
   }
 
   loadData() {
-    this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constants.API_ENDPOINT.userPermissionData+'?userType='+this.userType+'&email='+this.userEmail)
+    //this._service.apiServerUrl+"/"+this._constants.API_ENDPOINT.userPermissionData+'?userType='+this.userType+'&email='+this.userEmail
+    let reqURL: string = '';
+    reqURL = this._service.apiServerUrl+"/"+this._constants.API_ENDPOINT.userPermissionData+'?userType='+this.userType+'&email='+this.userEmail;
+    if(this.userEmail == ''){
+      reqURL = this._service.apiServerUrl+"/"+this._constants.API_ENDPOINT.userPermissionData+'?userType='+this.userType+'&id='+this.userID;
+    }
+    console.log("@Request Menu URL: ", reqURL);
+
+    this._service.getwithoutData(reqURL)
     .subscribe(
       res => {
         this.dashMenu = res['menu'];

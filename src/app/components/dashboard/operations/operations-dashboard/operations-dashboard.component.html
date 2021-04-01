@@ -512,8 +512,18 @@
                                         </div>
                                     </div>
 
-                                    <div class="ass-details" *ngIf="row.meta_title != 'user_registration'">
-                                        <p>{{row.message}}</p>
+                                    <div class="assess-doc" *ngIf="row.meta_title != 'user_registration'">
+                                                                                
+                                            <div class="data-attach">
+                                            <ng-container *ngIf="row.reply.length == 0">
+                                                <h5>{{row.message}}</h5>
+                                                </ng-container>                                                
+                                                <ng-container *ngIf="row.reply.length > 0">
+                                                <h5>{{row.reply[0].message}}</h5>
+                                                    <h5 [ngStyle]="{'font-family':'Dubai Regular','font-size':'12px'}">Replied On: {{row.modified | date}}</h5>                                        
+                                                </ng-container>
+                                            </div>  
+
                                         <div class="attach-cnt" *ngIf="row.document!=null">
                                             <a href="{{constant.mediaPath+row.document}}" target="_blank"
                                                 class="attachment-cnt"><span class="icon-attach"></span>{{ getFileName(row.document)}}</a>

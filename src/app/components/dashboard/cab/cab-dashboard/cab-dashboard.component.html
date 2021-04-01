@@ -14,7 +14,7 @@
                         </div>
                         <div class="trainer-detail">
                             <!-- <span class="trainer-data"><span class="icon-company"></span>Navigators Software Pvt. Ltd.</span> -->
-                            <span class="trainer-data"><span class="icon-mail"></span>{{userDetails?.email}}</span>
+                            <span class="trainer-data"><span class="icon-mail"></span> {{(userDetails?.email == '') ? 'NA' : userDetails?.email}}</span>
                             <!-- <span class="trainer-data"><span class="icon-call"></span>+971 254-3269</span> -->
                         </div>
                     </div>
@@ -569,7 +569,13 @@
                             <div class="col-md-12">
                                 <div class="assess-doc">
                                     <div class="data-attach">
+                                        <ng-container *ngIf="row.reply.length == 0">
                                         <h5>{{row.message}}</h5>
+                                        </ng-container>                                                
+                                        <ng-container *ngIf="row.reply.length > 0">
+                                        <h5>{{row.reply[0].message}}</h5>
+                                            <h5 [ngStyle]="{'font-family':'Dubai Regular','font-size':'12px'}">Replied On: {{row.modified | date}}</h5>                                        
+                                        </ng-container>
                                     </div>
                                 </div>
 

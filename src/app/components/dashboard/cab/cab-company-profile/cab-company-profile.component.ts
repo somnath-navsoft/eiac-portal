@@ -14,6 +14,7 @@ export class CabCompanyProfileComponent implements OnInit {
 
   userType:any;
   userEmail:any;
+  userID:number = 0;
   routeId:any;
   cabUserDetails:any;
   serviceDetail: any;
@@ -30,13 +31,14 @@ export class CabCompanyProfileComponent implements OnInit {
   constructor(public Service: AppService, public constant:Constants,public router: Router,public route: ActivatedRoute,public toastr: ToastrService,public uiDialog: UiDialogService) { }
 
   ngOnInit() {
-    this.userType = localStorage.getItem('type');
-    this.userEmail = localStorage.getItem('email'); 
+    this.userType   = localStorage.getItem('type');
+    this.userEmail  = localStorage.getItem('email');
+    this.userID     = parseInt(localStorage.getItem('userId'));
+
     // this.routeId = this.route.snapshot.queryParamMap.get('id');
     // console.log(localStorage.getItem('routeId'));
     this.routeId = localStorage.getItem('routeId');
 
-    this.userType = localStorage.getItem('type');
     // if(this.userType != 'operations')
     // {
     //   var landUrl = '/dashboard'+this.userType+'/home'
@@ -48,7 +50,13 @@ export class CabCompanyProfileComponent implements OnInit {
 
   loadData() {
     this.loader = false;
-    let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
+    let url: string = '';
+
+    url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
+    if(this.userEmail == ''){
+      url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&id='+this.userID;
+    }
+
     console.log(">>> Profile: ", url);
     //this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?id='+this.routeId)
     this.Service.getwithoutData(url)

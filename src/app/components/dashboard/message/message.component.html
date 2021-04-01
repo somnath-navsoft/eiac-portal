@@ -19,7 +19,7 @@
                         <div class="row m-0">
                             <div class="col-md-12 p-0">
                                 <!-- <div class="ass-name-det">
-                        <div class="row">
+                        <div class="row"> 
                             <div class="col-md-12">
                                 <div class="ass-data">
                                     <h3>Daniel Thompson</h3>
@@ -91,13 +91,24 @@
                                                 </div>
                                             </div>
 
-                                            <div class="ass-details" *ngIf="row.meta_title != 'user_registration'">
-                                                <p>{{row.message}}</p>
+                                            <div class="assess-doc" *ngIf="row.meta_title != 'user_registration'">
+                                                                                
+                                                <div class="data-attach">
+                                                <ng-container *ngIf="row.reply.length == 0">
+                                                    <h5>{{row.message}}</h5>
+                                                    </ng-container>                                                
+                                                    <ng-container *ngIf="row.reply.length > 0">
+                                                    <h5>{{row.reply[0].message}}</h5>
+                                                        <h5 [ngStyle]="{'font-family':'Dubai Regular','font-size':'12px'}">Replied On: {{row.modified | date}}</h5>                                        
+                                                    </ng-container>
+                                                </div>  
+
                                                 <div class="attach-cnt" *ngIf="row.document!=null">
                                                     <a href="{{constant.mediaPath+row.document}}" target="_blank"
                                                         class="attachment-cnt"><span
                                                             class="icon-attach"></span>{{ getFileName(row.document)}}</a>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -178,17 +189,66 @@
 
                                                     <div class="col-md-6"
                                                         *ngIf="getUserType=='cab_client' || getUserType=='cab_code'">
-                                                        <mat-form-field class="cab-data">
-                                                            <!-- <input type="text" (click)="search($event.target.value)"
-                                                                (input)="search($event.target.value)"
-                                                                placeholder="{{selectedField}}" matInput required
-                                                                [matAutocomplete]="auto">
-                                                            <mat-autocomplete #auto="matAutocomplete">
-                                                                <mat-option (onSelectionChange)="getValue(option.id)"
-                                                                    *ngFor="let option of selectSearch" [value]="option.username">
-                                                                    {{option.username}}
-                                                                </mat-option>
-                                                            </mat-autocomplete> -->
+
+                                                        <ng-container *ngIf="getUserType =='cab_client'">
+                                                            <mat-form-field class="cab-data">                                                   
+                                                                <mat-chip-list #chipList >
+                                                                    <mat-chip
+                                                                    *ngFor="let option of selectedUser"
+                                                                    [selectable]="selectable"
+                                                                    [removable]="removable"
+                                                                    (removed)="remove(option)">
+                                                                    {{option}}
+                                                                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                                                    </mat-chip>
+                                                                    <input 
+                                                                    placeholder="{{selectedField}}"
+                                                                    #fruitInput                                                      
+                                                                    [matAutocomplete]="auto"
+                                                                    [matChipInputFor]="chipList"
+                                                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                                    (keypress)="enterInput($event)"
+                                                                    (click) = "changeInput()"
+                                                                    (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
+                                                                </mat-chip-list>
+                                                                    <mat-autocomplete #auto="matAutocomplete" >
+                                                                        <mat-option (onSelectionChange)="getValue(option, 'cab_name')"
+                                                                            *ngFor="let option of selectSearch" [value]="option.username">
+                                                                            {{option.cab_name}}
+                                                                        </mat-option>
+                                                                    </mat-autocomplete>                                                    
+                                                            </mat-form-field>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="getUserType =='cab_code'">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-chip-list #chipList >
+                                                                    <mat-chip
+                                                                    *ngFor="let option of selectedUser"
+                                                                    [selectable]="selectable"
+                                                                    [removable]="removable"
+                                                                    (removed)="remove(option)">
+                                                                    {{option}}
+                                                                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                                                    </mat-chip>
+                                                                    <input 
+                                                                    placeholder="{{selectedField}}"
+                                                                    #fruitInput                                                      
+                                                                    [matAutocomplete]="auto"
+                                                                    [matChipInputFor]="chipList"                                                      
+                                                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                                    (keypress)="enterInput($event)" (click)="changeInput()"
+                                                                    (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
+                                                                </mat-chip-list>
+                                                                <mat-autocomplete #auto="matAutocomplete">
+                                                                    <mat-option (onSelectionChange)="getValue(option, 'cab_code')"
+                                                                        *ngFor="let option of selectSearch" [value]="option.username">
+                                                                        {{option.cab_code}}
+                                                                    </mat-option>
+                                                                </mat-autocomplete>
+                                                            </mat-form-field>
+                                                        </ng-container>
+
+                                                        <!-- <mat-form-field class="cab-data">
                                                             <mat-chip-list #chipList>
                                                                 <mat-chip *ngFor="let option of selectedUser"
                                                                     [selectable]="selectable" [removable]="removable"
@@ -200,6 +260,8 @@
                                                                 <input placeholder="{{selectedField}}" #fruitInput
                                                                     [matAutocomplete]="auto"
                                                                     [matChipInputFor]="chipList"
+                                                                    (keypress)="enterInput($event)"
+                                                                    (click)="enterInput($event)"
                                                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                                                     (matChipInputTokenEnd)="add($event)"
                                                                     (input)="search($event.target.value)">
@@ -209,10 +271,10 @@
                                                                     (onSelectionChange)="getValue(option, 'username')"
                                                                     *ngFor="let option of selectSearch"
                                                                     [value]="option.username">
-                                                                    {{option.username}}
+                                                                    {{option.cab_name}}
                                                                 </mat-option>
                                                             </mat-autocomplete>
-                                                        </mat-form-field>
+                                                        </mat-form-field> -->
                                                     </div>
                                                     <div class="col-md-6"
                                                         *ngIf="getUserType=='candidate' || getUserType=='trainers' || getUserType=='assessors' || getUserType=='super_admin'">
@@ -232,6 +294,7 @@
                                                                 <input placeholder="{{selectedField}}" #fruitInput
                                                                     [matAutocomplete]="auto"
                                                                     [matChipInputFor]="chipList"
+                                                                    (keypress)="enterInput($event)" (click)="enterInputClick()"
                                                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                                                     (matChipInputTokenEnd)="add($event)"
                                                                     (input)="search($event.target.value)">

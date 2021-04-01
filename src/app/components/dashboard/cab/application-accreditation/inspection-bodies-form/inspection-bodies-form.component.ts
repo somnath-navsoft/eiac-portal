@@ -2620,7 +2620,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         }
     }        
 
-    console.log(">>> Check status count: ", checkCount);
+    console.log(">>> Check status count: ", checkCount); 
 
     ////////console.log("authorize checklist count: ",checkCount)
     // for(let key in this.authorizationList) {

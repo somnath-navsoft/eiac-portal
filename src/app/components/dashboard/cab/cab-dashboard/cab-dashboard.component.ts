@@ -18,6 +18,7 @@ import { Observable } from 'rxjs';
 export class CabDashboardComponent implements OnInit {
 
   userEmail: any;
+  userID: number = 0;
   userType: any;
   userDetails: any;
   step1Data: any;
@@ -276,7 +277,13 @@ export class CabDashboardComponent implements OnInit {
     this.userType = localStorage.getItem('type');
     this.userId = localStorage.getItem('userId');
     this.loader = false;
-    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService + '?userType=' + this.userType + '&email=' + this.userEmail)
+    let url: string = ''
+    url = this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService + '?userType=' + this.userType + '&email=' + this.userEmail;
+    if(this.userEmail == ''){
+      url = this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService + '?userType=' + this.userType + '&id=' + this.userId;
+    }
+
+    this.Service.getwithoutData(url)
       .subscribe(
         res => {
           this.loader = true;
@@ -328,6 +335,9 @@ export class CabDashboardComponent implements OnInit {
               this.messageList.push(rec);
             }
           });
+
+          console.log("@@@Message All: ", this.messageList);
+
           // this.messageList = res['data'].message_list;
           this.recordsTotal = res['data'].recordsTotal;
           this.loader = true;

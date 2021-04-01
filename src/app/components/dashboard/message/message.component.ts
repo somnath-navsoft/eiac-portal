@@ -84,7 +84,7 @@ export class MessageComponent implements OnInit {
         res => {
           this.messageList = res['data'].message_list;
           this.loader = true;
-        });
+        });        
 
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=cab_client&searchKey=S')
       .subscribe(
@@ -98,25 +98,78 @@ export class MessageComponent implements OnInit {
         });
   }
 
-  search(query: string) {
-    // this.searchTerm = query;
-    let result = this.select(query);
-    // this.searchDetails = result;
-    if (query != '') {
-      this.selectSearch = result;
-    } else {
+  enterInput(theEvt: any) {
+    console.log("@select....", this.selectSearch, " -- ", this.selectedUser);
+    if (this.selectedUser.length > 0) {
+      this.selectSearch = [];
+      theEvt.preventDefault();
+      return;
+    }
+  }
+  enterInputClick() {
+    console.log("@select....", this.selectSearch, " -- ", this.selectedUser);
+    if (this.selectSearch.length > 0) {
       this.selectSearch = [];
     }
+  }
+
+  search(query: string) {
+    // this.searchTerm = query;
+    // let result = this.select(query);
+    // // this.searchDetails = result;
+    // if (query != '') {
+    //   this.selectSearch = result;
+    // } else {
+    //   this.selectSearch = [];
+    // }
+
+    if (this.selectedUser.length > 0) {
+      this.selectSearch = [];
+      return;
+    }
+    this.select(query);
 
   }
 
-  select(query: string): string[] {
+  changeInput(){
+    console.log("@change input...");
+    if(this.selectSearch.length > 0) {
+      this.selectSearch = [];
+    }
+  }
+
+  select(query: string) {
+
+    let result: string[] = [];
+    //let re = new RegExp(query, 'gi');
+    console.log("### ", query);
+    // if (this.subscription) {
+    //   this.subscription.unsubscribe();
+    // }
+    if (query != '') {
+      this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=' + query)
+        .subscribe(
+          res => {
+            this.searchDetails = res['data'].user_list;
+            this.loader = true;
+            // this.search(this.searchTerm);
+            console.log("@get User: ", this.searchDetails);
+            this.selectSearch = this.searchDetails;
+
+          }, err => {
+            this.loader = true;
+          });
+    } else {
+      this.selectSearch = [];
+    }
+    /*
     let result: string[] = [];
     if (this.getUserType == 'cab_client' || this.getUserType == 'cab_code') {
       for (let a of this.searchDetails) {
-        if (a.username.toLowerCase().indexOf(query) > -1) {
-          result.push(a);
-        }
+          console.log(a)
+        // if (a.username.toLowerCase().indexOf(query) > -1) {
+        //   result.push(a);
+        // }
       }
     } else {
       for (let a of this.searchDetails) {
@@ -128,12 +181,13 @@ export class MessageComponent implements OnInit {
 
     // this.searchDetails = result;
     return result;
+    */
   }
 
   setField(value) {
     // this.search(this.searchTerm);
     this.selectedUser = [];
-    this.loader = false;
+    //this.loader = false;
     this.searchDetails = [];
     this.selectSearch = [];
     this.selectedField = value;
@@ -157,16 +211,16 @@ export class MessageComponent implements OnInit {
       this.getUserType = 'super_admin';
     }
 
-    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=S')
-      .subscribe(
-        res => {
-          this.searchDetails = res['data'].user_list;
-          this.loader = true;;
-          // this.search(this.searchTerm);
+    // this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=S')
+    //   .subscribe(
+    //     res => {
+    //       this.searchDetails = res['data'].user_list;
+    //       this.loader = true;;
+    //       // this.search(this.searchTerm);
 
-        }, err => {
-          this.loader = true;
-        });
+    //     }, err => {
+    //       this.loader = true;
+    //     });
 
   }
 
@@ -250,10 +304,14 @@ export class MessageComponent implements OnInit {
   getValue(value, data) {
     this.fruitInput.nativeElement.blur();
     this.selectedUser = [];
-    this.selectedUserId = value.id;
+    //this.selectedUserId = value.id;
+    this.selectedUserId = (data == 'cab_name' || data == 'cab_code') ? value.user_id : value.id;
+    console.log("@Getvalue: ", value, " :: ", data, "--", this.selectSearch);
     this.button_disable = this.selectedUserId != '' ? false : true;
-    if (data == 'username') {
-      this.selectedUser.push(value.username);
+    if (data == 'cab_name') {
+      this.selectedUser.push(value.cab_name);
+    } else if (data == 'cab_code') {
+      this.selectedUser.push(value.cab_code);
     } else {
       this.selectedUser.push(value.email);
     }
@@ -262,6 +320,22 @@ export class MessageComponent implements OnInit {
 
 
   }
+
+  // getValue(value, data) {
+  //   this.fruitInput.nativeElement.blur();
+  //   this.selectedUser = [];
+  //   this.selectedUserId = value.id;
+  //   this.button_disable = this.selectedUserId != '' ? false : true;
+  //   if (data == 'username') {
+  //     this.selectedUser.push(value.username);
+  //   } else {
+  //     this.selectedUser.push(value.email);
+  //   }
+  //   this.fruitInput.nativeElement.value = '';
+  //   this.fruitInput.nativeElement.blur();
+
+
+  // }
 
 
   showFile() {
