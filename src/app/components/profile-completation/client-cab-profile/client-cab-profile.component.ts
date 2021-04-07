@@ -190,7 +190,8 @@ export class ClientCabProfileComponent implements OnInit {
           this.step1Data.first_name = this.titleFind != '' && this.titleFind != undefined ? first_nameData[1] : first_nameData[0];
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
-          this.personalEmailReadonly = this.step1Data.personal_email != '' ? true : false;
+          //this.personalEmailReadonly = this.step1Data.personal_email != '' ? true : false;
+          this.personalEmailReadonly = (typeof res['data'].step1[0] === 'object' && res['data'].step1[0].existing_cab == true) ? false : true;
           
           if(res['data'].step1 !='' && res['data'].step1[0] && res['data'].step1[0].dob != null && res['data'].step1[0].official_email !='' && res['data'].step1[0].office_tel_no !='' && res['data'].step1[0].designation !='' && res['data'].step1[0].nationality != null && res['data'].step1[0].mailing_address !='' && res['data'].step1[0].office !='' && res['data'].step1[0].tel_no !='' && res['data'].step1[0].office_address !='') {
             this.progressValue = 50;

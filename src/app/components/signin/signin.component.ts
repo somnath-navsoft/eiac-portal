@@ -63,9 +63,9 @@ export class SigninComponent {
               private store: Store<AppState>, private authService: AuthService,
               public signinBuild: FormBuilder , public router: Router, public _snackBar: MatSnackBar,public toastr: ToastrService
               ) {
+                //, Validators.pattern("^[_a-z0-9-\\+]+(\\.[_a-z0-9-]+)*@" + "[a-z0-9-]+(\\.[a-z0-9]+)*(\\.[a-z]{2,})$")
     this.signin = new FormGroup({
-      email:    new FormControl('', 
-      [Validators.required,Validators.pattern("^[_a-z0-9-\\+]+(\\.[_a-z0-9-]+)*@" + "[a-z0-9-]+(\\.[a-z0-9]+)*(\\.[a-z]{2,})$")]),
+      email:    new FormControl('', [Validators.required]),
       password: new FormControl(''),
       userRole: new FormControl('',[Validators.required])
     });
@@ -162,11 +162,17 @@ checkStrongPasswordType(type: string){
   isValid(){
     ////console.log(this.signin.get('email').value, " :: ", this.signin.get('userRole').value, " --- ", this.signin.value);
     if(this.signin.get('email').value == ''){
-      this.toastr.error('Email is InValid','Validation Error', {timeOut: 3000});
+      this.toastr.error('Email OR Code is InValid','Validation Error', {timeOut: 3000});
       ////console.log("email invalid....");
       // this.store.dispatch(new LogInFailure({ error: 'Email is InValid' }));
       return false;
     }
+    // if(this.signin.get('email').value != '' && this.appService.isValidEmail(this.signin.get('email').value)){
+    //   this.toastr.error('Email is InValid','Validation Error', {timeOut: 3000});
+    //   ////console.log("email invalid....");
+    //   // this.store.dispatch(new LogInFailure({ error: 'Email is InValid' }));
+    //   return false;
+    // }
     if(this.signin.get('password').value == ''){
       // this.store.dispatch(new LogInFailure({ error: 'Password strength failed' }));
       this.toastr.error("Password can't be blank",'Validation Error', {timeOut: 3000});

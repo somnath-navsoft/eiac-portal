@@ -189,6 +189,7 @@ export class CertificationBodiesFormComponent implements OnInit {
 
    paypalSandboxToken: string = '';
    paymentMode: string ='';
+   step5OrgName: string = '';
 
    //Master scope form data declaration
    firstStep:any;
@@ -1312,7 +1313,9 @@ loadAppInfo(){
 
         var cabName = data.cab_name.toString();
         // console.log(cabName,'cabName');
+        //alert(cabName);
         this.step5Data.organization_name  = (cabName != undefined && cabName != null) ? cabName : 'N/A';
+        this.step5OrgName = cabName;
         //console.log(this.ownOrgBasicInfo,'ownOrgBasicInfo');
         step2['cabBodData'].forEach((res,key) => {
           // //console.log(res," -- ",key);
@@ -1631,15 +1634,15 @@ loadAppInfo(){
               //Step 7
               if(res['data'].onBehalfApplicantDetails && res['data'].onBehalfApplicantDetails != null && res['data'].onBehalfApplicantDetails != undefined){
                 let getAuthData = res['data'].onBehalfApplicantDetails;
-                console.log(">>> Auth data: ", getAuthData);
+                //console.log(">>> Auth data: ", getAuthData);
                 this.step5Data.organization_name        = getAuthData.organization_name;
+                this.step5OrgName                       = getAuthData.organization_name;
                 this.step5Data.representative_name      = getAuthData.representative_name;
                 this.step5Data.designation              = getAuthData.designation;
                 this.step5Data.digital_signature        = getAuthData.digital_signature;
                 this.step5Data.application_date         = getAuthData.application_date;
 
-                // let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
-                  
+                // let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");                  
                 // let replace1: string = replace.toString().replace('"', '');
                 // let objVal: any = JSON.parse(JSON.stringify(replace1));
                 // let objVal1: any = JSON.stringify(replace1).replace(/[\{\}"]+/g,"");
@@ -2183,8 +2186,22 @@ updateScopeData = async() => {
       delete this.editScopeData['others'];
     }
 
-        this.toastr.success('Scope Data added successfully!','Success',{timeOut:2300});
-      }
+    if(this.step5Data.recommend_year == '' || this.step5Data.recommend_year == null){
+      var d   = new Date();
+      var yr  = d.getFullYear();
+      this.step5Data.recommend_year = (getData.data.recommend_year != null) ? parseInt(getData.data.recommend_year) : yr;
+      let getAuthData = getData.data.onBehalfApplicantDetails;
+      //console.log("#####@@@@@@@@@: ", getData.data);
+      this.step5Data.organization_name  = this.step5OrgName;//getAuthData.organization_name;
+      console.log("@@@@@@@@@@@DADADA: ", this.step5Data);
+    }
+    // if(this.step5Data.organization_name == '' || this.step5Data.organization_name == null){
+
+    //   let getAuthData = getData.data.onBehalfApplicantDetails;
+    //   this.step5Data.organization_name  = getAuthData.organization_name;
+    // }
+    this.toastr.success('Scope Data added successfully!','Success',{timeOut:2300});
+    }
   });
 }
 
@@ -2754,6 +2771,10 @@ onSubmitStep3(ngForm: any, type?:any, rowInd?: any, typeScopeId?: number) {
 
     ////console.log(">>>Form Submit: ", ngForm, " -- ",ngForm.form, " -- ", this.schemeRows); 
     console.log(">>> step3 submit...", this.step3Data, " -- ", this.certificationBodiesForm);
+
+    
+
+
     //return;
     //ngForm.form.valid &&
     //&& this.schemeRows.length == 1   && this.schemeRows[0].id === undefined
@@ -2782,7 +2803,7 @@ onSubmitStep3(ngForm: any, type?:any, rowInd?: any, typeScopeId?: number) {
     }
     else if(ngForm.form.valid && type == undefined) {
       console.log(">>>Scope saving...");
-      console.log(">>>Enter....3")
+      console.log(">>>Enter....3");
       this.saveScope(rowInd, typeScopeId);
       console.log(">>> step5 submit...", this.step3Data, " -- ", this.certificationBodiesForm);
       this.certificationBodiesForm.step3.is_draft = false;

@@ -57,7 +57,7 @@ export function reducer(state = initialState, action: All): State {
           ...state,
           isAuthenticated: (action.payload.token != null && action.payload.token != '') ? true : false,
           user: {
-            token: action.payload.token            
+            token: action.payload.token
           },
           errorMessage: null
         };

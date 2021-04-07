@@ -83,6 +83,8 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   cbOtherStandards: any[] = [];
   cbnameOfCountry: any[] = [{}];
   termsGeneral: any;
+  termsILA: any;
+  termsIAF: any;
   getFamilyName: boolean = false;
   findFamily: any;
   loadTCScheme: boolean = false;
@@ -262,9 +264,12 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
             if(item.title != undefined && item.title == "Accreditation Agreement"){
               this.termsGeneral = item;
             }
-            // if(item.title != undefined && item.title == "IAF-EIAC Agreement with CB"){
-            //   this.termsIAF = item;
-            // }
+            if(item.title != undefined && item.title == "EIAC ILAC MRA Mark Agreement with CAB"){
+              this.termsILA = item;
+            }
+            if(item.title != undefined && item.title == "IAF-EIAC Agreement with CB"){
+              this.termsIAF = item;
+            }
           })
           // this.termsGeneral = getData.data[0].content;
           //this.termsIAF     = getData.data[1];

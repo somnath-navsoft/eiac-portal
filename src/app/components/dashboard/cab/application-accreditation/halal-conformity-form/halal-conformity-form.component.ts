@@ -1476,11 +1476,11 @@ addSchemeRow(obj: any = [],index: number){
         this.Service.getwithoutData(url2)
         .subscribe(
           res => {
-            //console.log(res,'urlVal')
+            console.log(res,'urlVal11111111111')
             this.loader = true;
             let getData: any = res;
             let saveStep: number;
-            if(res['status'] == true && res['data'].id && res['data'].id != '') {
+            if(res['status1'] == true && res['data'].id && res['data'].id != '') {
                 let pathData: any;
                 let filePath: string;
   
@@ -1505,7 +1505,7 @@ addSchemeRow(obj: any = [],index: number){
                 else if(parseInt(getData.data.saved_step) == 9){
                   this.paymentStepComp = true;
                   saveStep = parseInt(getData.data.saved_step) - 2;
-                }else{                  
+                }else{
                   saveStep = parseInt(getData.data.saved_step);
                 }
               }

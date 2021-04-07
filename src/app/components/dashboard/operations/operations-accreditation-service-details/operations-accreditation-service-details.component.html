@@ -24,11 +24,12 @@
                 </div>
               </div>
               <div class="col border-left-dash">
+                <!-- @{{serviceDetail?.payment_status}} -->
                 <div class="main_app_wrap">
                   <div class="appln-data status_hdr">
                     <h5>Application Fees :</h5>
                   </div>
-                  <div [ngClass]="{'complete': serviceDetail?.payment_status == 'paid', 'under-review':serviceDetail?.payment_status == 'unpaid', 'under-review':serviceDetail?.payment_status == null }">
+                  <div [ngClass]="{'complete': serviceDetail?.payment_status == 'paid', 'under-review':serviceDetail?.payment_status == 'unpaid' || serviceDetail?.payment_status == null || serviceDetail?.payment_status == 'pending'}">
                     <span>{{(serviceDetail?.payment_status == "paid") ? 'Paid' : 'Unpaid'}}</span>
                   </div>
                 </div>
@@ -1454,23 +1455,29 @@
           </div>
         </div>
       </div>
-
-      <ng-template #ILAView let-modal>
+      <!--  -->
+      <ng-template #IAFView let-modal>
         <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">ILA MRA Laboratories</h4>
+          <h4 class="modal-title" id="modal-basic-title">IAF MRA</h4>
           <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body"> 
-            <app-loader *ngIf="loaderPdf"></app-loader>
-            <p *ngIf="errorLoader">Error Loading PDF</p>
-            <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="true"
-                [zoom]="1.0" [original-size]="false" [autoresize]="true"
-                [show-borders]="true" (error)="onError($event)" (on-progress)="onProgress($event)"
-                (after-load-complete)="completeLoadPDF($event)"
-                [render-text]="true">
-            </pdf-viewer>
+            <p [innerHTML]="termsIAF.content"></p>
+        </div>
+        <div class="modal-footer">
+        </div>
+        </ng-template>
+      <ng-template #ILAView let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">ILAC MRA</h4>
+          <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body"> 
+            <p [innerHTML]="termsILA.content"></p>
         </div>
         <div class="modal-footer">
         </div>
@@ -1643,7 +1650,9 @@
                   <a href="javascript:void(0)"  (click)="openView(agreementView, 'agreement')">Accreditation Agreement</a> and request to provide us with a word agreement form for signature.
                 </div>
                 <!-- <div class="authData"><span class="auth-class-check">(✓)</span> I require ILA MRA "Laboratories"  <a href="javascript:void(0)"  (click)="openView(ILAView, 'ILA')">Agreement</a>.</div> -->
-                <div class="authData" *ngIf="ilaMraCheck">I require ILA MRA "Laboratories" Agreement.</div>
+                <div class="authData" *ngIf="ilaMraCheck && (serviceDetail?.form_meta == 'inspection_body' || serviceDetail?.form_meta == 'health_care' || serviceDetail?.form_meta == 'testing_calibration')">
+                  I require <a href="javascript:void(0)"  (click)="openView(ILAView, 'ILA')">ILAC MRA </a>Mark.</div> 
+                <div class="authData" *ngIf="ilaMraCheck && (serviceDetail?.form_meta == 'certification_bodies')">I require <a href="javascript:void(0)"  (click)="openView(IAFView, 'IAF')">IAF MRA</a> Mark.</div>
 
                 <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
               </div>
@@ -1967,7 +1976,9 @@
       <div class="row m-0">
         <div class="col-md-12">
           <div class="bttns-health bttn-staff">
-            <div *ngIf="paymentDetails && paymentDetails!= null" class="button-content">
+            <!-- serviceDetail?.payment_status -->
+            <!-- <div *ngIf="paymentDetails && paymentDetails!= null" class="button-content"> -->
+            <div *ngIf="serviceDetail?.payment_status != null && serviceDetail?.payment_status == 'paid'" class="button-content">
               <!-- <button class="cancel-bttn" (click)="uiDialog.openPDFViewer(_constant.mediaPath,serviceDetail.form_pdf)"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button> -->
 
               <button class="cancel-bttn" (click)="downloadApplications()"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
