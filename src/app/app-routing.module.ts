@@ -161,7 +161,7 @@ const routes: Routes = [
           ]
     },
 
-    //Eiac-staff - internal operations
+    //internal operations
     { path: 'operations', component: OperationsComponent, canActivate: [AuthGuard],
         children:[
           { path: '', redirectTo:'home', pathMatch:'full'},

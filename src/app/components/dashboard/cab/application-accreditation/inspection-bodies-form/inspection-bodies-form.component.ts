@@ -3247,13 +3247,13 @@ export class InspectionBodiesFormComponent implements OnInit {
 
     //if(this.proficiencyTesting.length > 0 && this.step2Data.proficiency_testing_val > 0) {
       this.step2Data.proficiency_testing_val = 1;
-      //if(type == undefined){
-        if(this.Service.isObjectEmpty(this.proficiencyTesting) == true) {
-            this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
-          
-            //}
-              ////////console.log(">> Data: ", this.proficiencyTesting);
 
+      //console.log("@Bef value: ", this.Service.isObjectEmpty(this.proficiencyTesting), " -- ", this.proficiencyTesting);
+
+      //if(type == undefined){
+        if(this.Service.isObjectEmpty(this.proficiencyTesting) == false) {
+            this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
+              //console.log(">> Data: ", this.proficiencyTesting);
               this.proficiencyTesting.forEach((rec,key) => {
                 let dtFormat = '';
               if(rec.participation_date != undefined && rec.participation_date._i != undefined){
@@ -3276,8 +3276,8 @@ export class InspectionBodiesFormComponent implements OnInit {
               this.proficiencyTesting[key].pt_provider = (rec.pt_provider == undefined) ? "" : rec.pt_provider;
           })
         }
-    ////console.log("@Step2 submit...", this.inspectionBodyForm, " --- ", this.formApplicationId);
-   // return;
+    //console.log("@Step2 submit...", this.inspectionBodyForm, " --- ", this.formApplicationId);
+    //return;
 
     if(ngForm2.form.valid && type == undefined) {
       //////console.log('>>>>fffff: ', this.inspectionBodyForm);

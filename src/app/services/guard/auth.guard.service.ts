@@ -12,8 +12,8 @@ export class AuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot,) {
         let getLocalToken = localStorage.getItem('token');
         this.token = (getLocalToken != null) ? getLocalToken : '';        
-        console.log('Auth guard: 1',this.token);
-        console.log("Auth guard..." + state.url + " == " +route.url);
+        //console.log('Auth guard: 1',this.token);
+        //console.log("Auth guard..." + state.url + " == " +route.url);
 
         if(state.url != null && 
           (state.url == '/dashboard/cab_client/inspection-bodies-form'          || state.url == '/dashboard/cab_client/certification-bodies-form' ||
