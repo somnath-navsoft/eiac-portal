@@ -40,9 +40,7 @@ export class AppService {
   public nameOnly: any;
   user = null;
   public mapboxToken = 'pk.eyJ1IjoicHJpbmF2IiwiYSI6ImNrNmh4YXVpcTJwbnMzbm4zYTc1ZG5kbHIifQ.lEliOwWLfcau6c0McnkGUA';
-  // private node:Subject<Node> = new BehaviorSubject();
-  // dynamicVal:any;
-  // dynamicVal: Subject<any> = new Subject<any>();
+  
   public setValue: any;
   public setIBValue: any;
   public oldScopeData: any;
