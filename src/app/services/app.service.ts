@@ -23,16 +23,10 @@ export class AppService {
   dashBoardPagination: any = 5;
   messagePagination: any = 10;
 
-  //Amit - 192.168.7.56
-
-  // public apiServerUrl         =   'http://192.168.7.56:8000/webservice';
-  // public apiRequestUrl        =   'http://192.168.7.56:8000/'; 
-
   public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
   public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
 
-  public apiUatServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
-  // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
+  //public apiUatServerUrl      =   'https://uat-service.eiac.gov.ae/webservice';
 
   public countryURL           =   "https://raw.githubusercontent.com/sagarshirbhate/Country-State-City-Database/master/Contries.json";
   public assetsBasePath       =   "https://uat-portal.eiac.gov.ae/assets/csc-json/";

@@ -452,7 +452,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       if(type !== undefined && type === 'initLoad'){
         selectValue = getValues;
       }
-      let url = this.Service.apiUatServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data;
+      let url = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data;
       console.log("option change value: ", url, " :: ", getValues, " -- ", selectValue, " -- Type: ", typeof selectValue);
       //this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,
       let jsonReq: any = {};
@@ -1069,7 +1069,7 @@ export class InspectionBodiesFormComponent implements OnInit {
        //let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.criteriaIdByScope + value;
        //this.Service.apiServerUrl+"/"
        //value =18;
-       let apiURL = this.Service.apiUatServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data+"?scheme="+value;
+       let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data+"?scheme="+value;
        //this.constant.API_ENDPOINT.criteriaScope + value;
        ////////console.log("API: ", apiURL);
 
