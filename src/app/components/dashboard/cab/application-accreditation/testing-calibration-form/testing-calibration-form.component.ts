@@ -738,7 +738,6 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
      //let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.criteriaIdByScope + value;
      //this.Service.apiServerUrl+"/"
      //value =18;
-     //let apiURL = this.Service.apiUatServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data+"?scheme="+value;
      let apiURL: string = '';
      if(typeFamily == undefined){
       apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+value;
@@ -1167,7 +1166,6 @@ getCriteria(value, secInd: any){
      //let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.criteriaIdByScope + value;
      //this.Service.apiServerUrl+"/"
      //value =18;
-     let apiURL = this.Service.apiUatServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data+"?scheme="+value;
      //this.constant.API_ENDPOINT.criteriaScope + value;
      ////////console.log("API: ", apiURL);
 

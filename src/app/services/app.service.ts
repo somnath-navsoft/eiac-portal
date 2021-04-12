@@ -23,16 +23,9 @@ export class AppService {
   dashBoardPagination: any = 5;
   messagePagination: any = 10;
 
-  //Amit - 192.168.7.56
-
-  // public apiServerUrl         =   'http://192.168.7.56:8000/webservice';
-  // public apiRequestUrl        =   'http://192.168.7.56:8000/'; 
-
   public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
   public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
 
-  public apiUatServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
-  // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
 
   public countryURL           =   "https://raw.githubusercontent.com/sagarshirbhate/Country-State-City-Database/master/Contries.json";
   public assetsBasePath       =   "https://uat-portal.eiac.gov.ae/assets/csc-json/";
@@ -47,9 +40,7 @@ export class AppService {
   public nameOnly: any;
   user = null;
   public mapboxToken = 'pk.eyJ1IjoicHJpbmF2IiwiYSI6ImNrNmh4YXVpcTJwbnMzbm4zYTc1ZG5kbHIifQ.lEliOwWLfcau6c0McnkGUA';
-  // private node:Subject<Node> = new BehaviorSubject();
-  // dynamicVal:any;
-  // dynamicVal: Subject<any> = new Subject<any>();
+  
   public setValue: any;
   public setIBValue: any;
   public oldScopeData: any;
