@@ -19,7 +19,8 @@ export class AuthGuard implements CanActivate {
             localStorage.setItem("redirectURL", state.url);
         }
         if (this.token == '' || this.token == null)  {
-            this.router.navigate(['/sign-in']);
+            //this.router.navigate(['/sign-in']);
+            window.top.location.href = '/sign-in';
             return false;
         }
         //Check for usertype allowed to form access only for CAB - redirect to Dashboard

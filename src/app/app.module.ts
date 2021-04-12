@@ -169,7 +169,7 @@ import { ExportAsModule } from 'ngx-export-as';
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { NgxFullCalendarModule } from 'ngx-fullcalendar';
 import { OperationsCertificationsComponent } from './components/dashboard/operations/operations-certifications/operations-certifications.component'
-
+import { UserIdleModule } from 'angular-user-idle';
 export const MY_FORMATS = {
   parse: {
     dateInput: 'LL',
@@ -243,6 +243,7 @@ export const MY_FORMATS = {
     OperationsCertificationsComponent
   ],
   imports: [
+    UserIdleModule.forRoot({idle: 5, timeout: 2}),
     CommonModule,
     FormsModule,
     NgxPayPalModule,

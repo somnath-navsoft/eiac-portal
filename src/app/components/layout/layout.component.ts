@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { AppState, selectAuthState } from '../../store/app.states';
 import { Store } from '@ngrx/store';
-import { Observable, from } from 'rxjs';
+import { Observable, from, Subject } from 'rxjs';
 import { Router, NavigationEnd, ActivatedRoute} from '@angular/router'
 import { LogOut, LogInSuccess, LogInState } from '../../store/actions/auth.actions';
 import { filter} from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AppService } from '../../services/app.service'; 
 import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { UserIdleService, UserIdleConfig } from 'angular-user-idle';
 
 @Component({
   selector: 'portal-layout',
@@ -32,6 +33,8 @@ export class LayoutComponent implements OnInit {
 
   popupHeaderText: string ='';
   popupBodyText: string ='';
+  userActivity;
+  userInactive: Subject<any> = new Subject();
 
   constructor(private store: Store<AppState>, private router: Router, private modalService: NgbModal,
     public route: ActivatedRoute, private _service: AppService, public toastr: ToastrService) { 
@@ -301,10 +304,29 @@ export class LayoutComponent implements OnInit {
 
       // this.router.params.switchMap(params => { 
       // })
+
+   // this.setTimeout();
+    //this.userInactive.subscribe(() => console.log('user has been inactive for 5s'));
+
+
   }
   closeDialog(){
     this.modalService.dismissAll();
   }
+
+  setTimeout(): void {
+    this.userActivity = setTimeout(() => {
+      console.log(">>>Time lapse....");
+      this.userInactive.next(undefined)
+    }, 5);
+}
+
+@HostListener('window:mousemove') refreshUserState() {
+    clearTimeout(this.userActivity);
+    this.setTimeout();
+}
+
+
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -326,6 +348,7 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit() {
     console.log("@Layout...");
+    
 
     // let isTokenExpired: boolean = this._service.isTokenExpired()
     // if(isTokenExpired){
@@ -365,6 +388,17 @@ export class LayoutComponent implements OnInit {
         // this.errorMessage = state.errorMessage;
       });
     },0)
+
+
+    // //Start watching for user inactivity.
+    // this.userIdle.setConfigValues({idle:6, timeout:8});
+    // this.userIdle.startWatching();
+    
+    // // Start watching when user idle is starting.
+    // this.userIdle.onTimerStart().subscribe(count => console.log(count, "###idele....Layout"));
+    
+    // // Start watch when time is up.
+    // this.userIdle.onTimeout().subscribe(() => console.log('Time is up!'));
     
   }
 
