@@ -1666,14 +1666,7 @@ getCriteria(value, secInd: any){
     this.loadCountryStateCity();
     this.stepDefaultValue();
     this.loadSchemeMaster();
-    this.loadTermsConditions();
-    // this.loadCountryStateCity();
-    //this.checkCaptchaValidation = true;
-
-    this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
-    this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
-    
-    // this.loader = false;
+    this.loadTermsConditions();    
     this.headerSteps.push(
       {
       title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
@@ -4395,14 +4388,14 @@ getSantizeUrl(url : string) {
 openView(content, type:string) {
   let pathData: any;
   //////console.log(">>>pop up...", content);
-  if(type != undefined && type == 'agreement'){
-    pathData = this.getSantizeUrl(this.accredAgreemFile);
-    this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
-  }
-  if(type != undefined && type == 'checklist'){
-    pathData = this.getSantizeUrl(this.checklistDocFile);
-    this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
-  }
+  // if(type != undefined && type == 'agreement'){
+  //   pathData = this.getSantizeUrl(this.accredAgreemFile);
+  //   this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+  // }
+  // if(type != undefined && type == 'checklist'){
+  //   pathData = this.getSantizeUrl(this.checklistDocFile);
+  //   this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+  // }
 
   //////console.log(">>> open view", this.pathPDF, " -- ",  this.pathPDF);
 

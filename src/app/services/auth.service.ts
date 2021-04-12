@@ -9,7 +9,6 @@ import { Constants } from './constant.service';
 
 export class AuthService {
   public BASE_URL = this._service.apiServerUrl;
-  //'https://uat-service.eiac.gov.ae/webservice';
   appErrorStack: Subject<String>;
 
   constructor(private http: HttpClient, private _service: AppService, private _constant:  Constants) {

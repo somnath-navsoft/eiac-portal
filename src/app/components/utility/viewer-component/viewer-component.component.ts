@@ -22,7 +22,6 @@ export class ViewerComponentComponent implements OnInit {
       // console.log('dataa...', this.data);
       let pathValues : any;
       this.pathURL = this.data.path;// + "&output=embed";
-      //let url = 'https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf';
       pathValues = this.getSantizeUrl(this.pathURL);//this.sanitizer.bypassSecurityTrustResourceUrl(this.data.path);
       // = this.sanitizer.bypassSecurityTrustResourceUrl(this.data.path);
       //pathValues.changingThisBreaksApplicationSecurity;

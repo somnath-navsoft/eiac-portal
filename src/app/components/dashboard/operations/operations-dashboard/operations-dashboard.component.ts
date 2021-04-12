@@ -230,11 +230,6 @@ export class OperationsDashboardComponent implements OnInit {
     localStorage.setItem("io_dept", selDept);
     this.router.navigateByUrl('/dashboard/operations/service-enquiries-list')
   }
-
-
-  //department view onchange
-  //https://uat-service.eiac.gov.ae/webservice/io-dashboard/?department_type = io roles value
-
   getFormType(formMeta: string) {
     // | 
     if (formMeta === 'health_care') {

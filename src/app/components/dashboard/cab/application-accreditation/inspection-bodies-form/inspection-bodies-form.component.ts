@@ -778,10 +778,6 @@ export class InspectionBodiesFormComponent implements OnInit {
     );
 
     this.loadTermsConditions();
-
-    //this.routeId = localStorage.getItem('routerId');
-    //this.routeId = this.urlVal;//this.Service.getValue() != '' ? this.Service.getValue() : '';
-    //////console.log("@@router: ", this.routeId, " -- ", this.Service.setValue);
     this.step5Data.scheme_ids = [];
 
     var d = new Date();
@@ -790,69 +786,22 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.recommendYearValues.push({title: k.toString(), value: k});
     }
     this.step7Data.recommend_year = yr;
-
-    
-
-
-    // let jsonStrting = '{"18":{"scope_heading":{"43":"Inspection Category","45":"Inspection field","47":"Range of inspection","49":"Stage of the inspection","51":"Inspection criteria","53":"Inspection Activity Type"},"scope_value":[{"43":"Product","45":"Mechanical Engineering of Lifting Equipment","47":"Lever hoist","49":"In-service","51":"BS EN 13157","53":"A"},{"43":"Product","45":"Mechanical, Electrical and Structural Engineering of Lifting Equipment","47":"Mobile crane","49":"In-service","51":"BS 7121-2-1,BS 7121-2-3","53":"B,C"},{"43":"Product","45":"Mechanical Engineering of Lifting Equipment – Earth Moving","47":"Backhoe Loader","49":"In-service","51":"BS EN 474-4","53":"A,B"}]},"105":{"scope_heading":{"55":"Inspection Category","57":"Inspection field","59":"Range of inspection","61":"Stage of the inspection","63":"Inspection criteria","65":"Inspection Activity Type"},"scope_value":[{"55":"Product","57":"Mechanical Engineering of Lifting Accessories","59":"Hook","61":"In-service","63":"Welcome","65":"Hello"},{"55":"Product","57":"Mechanical Engineering of Lifting Accessories","59":"Chain sling","61":"In-service","63":"bbb","65":"aaa"}]}}';
-    // let jsonObject = JSON.parse(jsonStrting);
-    // //this.editScopeData = jsonObject;// this.Service.jsonToArray(jsonObject);
-    // ////console.log(">>>Saved details: ", jsonObject, " -- ", this.editScopeData);
-
-
     this.modalOptions = {
       backdrop:'static',
       backdropClass:'customBackdrop',
     }
-
-    this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
-    this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
-
-    //this.step1Data.accredation_criteria = 1;//
-    //this.step1Data.certificate_delivery_addr = true;
-    
-    //this.inspectionBodyForm.criteria_request = 'ISO/IEC17020';
-    // this.titleService.setTitle('EIAC - Inspection Bodies');
     this.addMinutesToTime = this.Service.addMinutesToTime();
-    //this.dynamicScopeModelValues[0] = {};
-
-
-  
-
-    //return;
-    
-      this.loadData();
-   
-      this.loadCountryStateCity();
+    this.loadData();   
+    this.loadCountryStateCity();
     if(this.urlVal != 'undefined'){
-      ////console.log(">>>> enter...");
     this.loadAppData();
     this.loadAppInfo();
     }
-
     if(this.urlVal == 'undefined'){
-      ////console.log(">>>> enter...1");
-      this.loadAppInfo();
+    this.loadAppInfo();
     }
     this.loadFormDynamicTable();
-    
-
-    // let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
-    // ////////console.log("app info: ", url);
-    // this.Service.getwithoutData(url)
-    //   .subscribe(
-    //     res => {
-    //       let getData: any = res;
-    //       let data: any;
-    //       //, getData.data.step1, " -- ", getData.data.step2
-    //       ////////console.log("Profile info >>> ", getData.data);
-  
-    //     }
-    //   )
-    //   return;
-
     this.loader = false;
-    //
     this.headerSteps.push(
       {
       title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'

@@ -320,9 +320,6 @@ ngOnInit() {
   ]
 
   this.addMinutesToTime = this.Service.addMinutesToTime();
-
-  this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
-  this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
   this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
   this.userEmail = localStorage.getItem('email');
   this.userType = localStorage.getItem('type');
