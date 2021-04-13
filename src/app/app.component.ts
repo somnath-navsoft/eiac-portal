@@ -12,7 +12,7 @@ export class AppComponent {
   userActivity;
   userInactive: Subject<any> = new Subject();
   //Set 30 min idle time
-  userIdleTimeLogout: any = 1799900;//1800000 => 30min;
+  userIdleTimeLogout: any = 1800000;//30 min
   constructor(private _router: Router,){
     this.setTimeout();
     this.userInactive.subscribe(() => console.log(`user has been inactive for 15s`));

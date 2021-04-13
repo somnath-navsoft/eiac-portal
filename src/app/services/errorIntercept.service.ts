@@ -30,24 +30,24 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     console.log("#intercepted request ... ");
 
-    if(localStorage.getItem('token') != undefined && localStorage.getItem('token') != '' && localStorage.getItem('token') != null){
-        let jwtToken: any = localStorage.getItem('token');
-        let tokenExpDate: any = this._service.getTokenExpirationDate(jwtToken);
-        let isTokenExpired: boolean = this._service.isTokenExpired()
-        console.log("@Token Exp Date: ", tokenExpDate, " -- ", isTokenExpired);
-        //Token expired
-        if(isTokenExpired){
-            localStorage.setItem('token', '');
-            localStorage.setItem('type', '');
-            localStorage.setItem('email','');
-            //this._toastr.error("Your Session has expired, Please login again");
-            //window.top.location.href = '/sign-in';
-            // setTimeout(() => {
-            //   //window.top.location.href = '/sign-in';
-            //   //this._router.navigateByUrl('/sign-in')
-            // }, 3000)            
-        }
-    }    
+    // if(localStorage.getItem('token') != undefined && localStorage.getItem('token') != '' && localStorage.getItem('token') != null){
+    //     let jwtToken: any = localStorage.getItem('token');
+    //     let tokenExpDate: any = this._service.getTokenExpirationDate(jwtToken);
+    //     let isTokenExpired: boolean = this._service.isTokenExpired()
+    //     console.log("@Token Exp Date: ", tokenExpDate, " -- ", isTokenExpired);
+    //     //Token expired
+    //     if(isTokenExpired){
+    //         // localStorage.setItem('token', '');
+    //         // localStorage.setItem('type', '');
+    //         // localStorage.setItem('email','');
+    //         //this._toastr.error("Your Session has expired, Please login again");
+    //         //window.top.location.href = '/sign-in';
+    //         // setTimeout(() => {
+    //         //   //window.top.location.href = '/sign-in';
+    //         //   //this._router.navigateByUrl('/sign-in')
+    //         // }, 3000)            
+    //     }
+    // }    
 
     //Clone the request to add the new header.
     //const authReq = request.clone({ headers: request.headers.set("token", localStorage.getItem("token")) });
