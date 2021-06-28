@@ -9,10 +9,10 @@ export class Constants{
 
 	public apiUrl: string 					= '';
 
-	public mediaPath: string 				= 'https://service.eiac.gov.ae';
+	public mediaPath: string 				= 'https://uat-service.eiac.gov.ae';
 
-	public documentPath: string 			= 'https://eiac.gov.ae/documents/publications';
-	public directoryPath: string 			= 'https://eiac.gov.ae/directory';
+	public documentPath: string 			= 'https://uat.eiac.gov.ae/documents/publications';
+	public directoryPath: string 			= 'https://uat.eiac.gov.ae/directory';
 
 	//trainerAPI: '/trainer',
 	//all_services: this.apiUrl + 'service_page/', 
