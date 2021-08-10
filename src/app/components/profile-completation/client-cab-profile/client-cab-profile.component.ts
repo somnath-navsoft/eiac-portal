@@ -223,6 +223,7 @@ export class ClientCabProfileComponent implements OnInit {
             this.step1Data.fax_with_area = step1.fax_no;
             this.step1Data.office_address = step1.office_address;
             this.step1Data.officephone_with_area = step1.office_tel_no;
+            this.step2Data.applicant_official_email = res['data']['user_data'][0].email;
             
           }
           if(res['data'].step2 != '') {
@@ -263,7 +264,7 @@ export class ClientCabProfileComponent implements OnInit {
             this.step2Data.applicant_mailing_address = step1.applicant_address;
             this.step2Data.applicant_phone_with_area = step1.applicant_tel_no;
             this.step2Data.applicant_fax_with_area = step1.applicant_fax_no;
-            this.step2Data.applicant_official_email = step1.applicant_email;
+            this.step2Data.applicant_official_email = res['data']['user_data'][0].email;
             this.step2Data.applicant_official_website = step1.applicant_website;
             this.step2Data.date_establishment = new Date(step1.date_of_establisment);
             this.step2Data.date_issue = new Date(step1.date_of_issue);

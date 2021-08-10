@@ -112,7 +112,7 @@
 
                                             <div class="col-md-4">
                                                 <mat-form-field class="cab-data">
-                                                    <mat-label>Personal E-mail</mat-label>
+                                                    <mat-label>Official E-mail</mat-label>
                                                     <input matInput [readonly]="personalEmailReadonly" [(ngModel)]="step1Data.personal_email" name="personal_email" placeholder="" required>
                                                 </mat-form-field>
 
@@ -326,7 +326,7 @@
                                     <div class="col-md-4">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Official Email Address</mat-label>
-                                            <input matInput [(ngModel)]="step2Data.applicant_official_email" name="applicant_official_email" placeholder="" required>
+                                            <input matInput [(ngModel)]="step2Data.applicant_official_email" name="applicant_official_email" [readonly]="true" placeholder="" required>
                                         </mat-form-field>
 
                                         <p class="error" *ngIf="step2Data.applicant_official_email && !Service.checkInput('email',step2Data.applicant_official_email)">Please Enter Correct Email Id</p>
