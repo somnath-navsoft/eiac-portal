@@ -126,7 +126,7 @@ export class SidebarComponent implements OnInit {
       this._router.navigateByUrl('dashboard/'+link);
     }else if(link!== '#' && menuLink =='documents'){
       // this._router.navigateByUrl('https://eiac.gov.ae/documents/publications');
-      window.open('https://eiac.gov.ae/documents/publications', '_blank');
+      window.open('https://uat.eiac.gov.ae/documents/publications', '_blank');
     }
   }
 
