@@ -214,7 +214,7 @@ export class ClientCabProfileComponent implements OnInit {
             
             this.step1Data.date_of_birth = new Date(step1.dob);
             
-            this.step1Data.company_email = step1.official_email;
+            this.step1Data.company_email = step1.applicant_email;
             this.step1Data.designation = step1.designation;
             this.step1Data.nationality = step1.nationality;
             this.step1Data.mailing_address = step1.mailing_address;
