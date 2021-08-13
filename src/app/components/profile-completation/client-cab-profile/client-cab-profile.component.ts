@@ -190,6 +190,7 @@ export class ClientCabProfileComponent implements OnInit {
           this.step1Data.first_name = this.titleFind != '' && this.titleFind != undefined ? first_nameData[1] : first_nameData[0];
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
+          this.step2Data.applicant_official_email = res['data']['user_data'][0].email;
           //this.personalEmailReadonly = this.step1Data.personal_email != '' ? true : false;
           this.personalEmailReadonly = (typeof res['data'].step1[0] === 'object' && res['data'].step1[0].existing_cab == true) ? false : true;
           
