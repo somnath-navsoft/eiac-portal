@@ -23,12 +23,12 @@ export class AppService {
   dashBoardPagination: any = 5;
   messagePagination: any = 10;
 
-  public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
-  public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
+  public apiServerUrl         =   'uat-service.eiac.gov.ae/webservice';
+  public apiRequestUrl        =   'https://service.eiac.gov.ae/';
 
 
   public countryURL           =   "https://raw.githubusercontent.com/sagarshirbhate/Country-State-City-Database/master/Contries.json";
-  public assetsBasePath       =   "https://uat-portal.eiac.gov.ae/assets/csc-json/";
+  public assetsBasePath       =   "https://portal.eiac.gov.ae/assets/csc-json/";
   public localCountryCodeURL  =   "assets/countryCodes.json";
 
   public regExName: any;
