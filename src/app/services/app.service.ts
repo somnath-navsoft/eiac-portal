@@ -23,7 +23,7 @@ export class AppService {
   dashBoardPagination: any = 5;
   messagePagination: any = 10;
 
-  public apiServerUrl         =   'uat-service.eiac.gov.ae/webservice';
+  public apiServerUrl         =   'https://service.eiac.gov.ae/webservice';
   public apiRequestUrl        =   'https://service.eiac.gov.ae/';
 
 
