@@ -33,7 +33,7 @@
                                       (selectionChange)="changeFilter($event)">
                                         <mat-option value="application_number">Application Number</mat-option>
                                         <mat-option value="cab_name">CAB Name</mat-option>
-                                        <mat-option value="cab_code">CAB Code</mat-option>
+                                        <mat-option value="cab_code">Customer ID</mat-option>
                                         <mat-option value="application_status">Status</mat-option>
                                         <mat-option value="training_form_type">Training Type</mat-option>
                                         <mat-option value="course_name">Course Name</mat-option>
@@ -146,7 +146,7 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.applicantName"></span>
                                 </a>
                             </th>
-                            <th [ngStyle]="{'font-size':'14px'}">CAB Code
+                            <th [ngStyle]="{'font-size':'14px'}">Customer ID
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicantCode', curSortDir.applicantCode)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.applicantCode"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.applicantCode"></span>

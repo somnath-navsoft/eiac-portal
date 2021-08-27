@@ -37,7 +37,7 @@
                                     <mat-select placeholder="Select" (selectionChange)="searchableColumn()" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue">
                                         <mat-option value="application_number">Application Number</mat-option>
                                         <mat-option value="cab_name">CAB Name</mat-option>
-                                        <mat-option value="cab_code">CAB Code</mat-option>
+                                        <mat-option value="cab_code">Customer ID</mat-option>
                                         <mat-option value="form_meta">Accreditation Type</mat-option>
                                         <mat-option value="accr_status">Status</mat-option>
                                         <mat-option value="criteria">Scope</mat-option>
@@ -166,7 +166,7 @@
                                 </a>
                             </th>
 
-                            <th>CAB Code
+                            <th>Customer ID
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'cab_code', curSortDir.cab_code)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.cab_code"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.cab_code"></span>

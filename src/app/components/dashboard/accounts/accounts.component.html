@@ -64,7 +64,7 @@
                                       (selectionChange)="changeFilter($event)">
                                         <mat-option value="id">Application Number</mat-option>
                                         <mat-option value="cab_name">CAB Name/Candidate</mat-option>
-                                        <mat-option value="cab_code">CAB Code</mat-option>
+                                        <mat-option value="cab_code">Customer ID</mat-option>
                                         <mat-option value="voucher_no">Voucher Number</mat-option>
                                         <mat-option value="voucher_date">Payment Date</mat-option>
                                         <mat-option value="payment_status">Status</mat-option>
@@ -197,7 +197,7 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.cabName"></span>
                                 </a>
                             </th>
-                            <th>CAB Code
+                            <th>Customer ID
                                 <a href="javascript:void(0)" (click)="sortedList(accountsData, 'cabCode', curSortDir.cabCode)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.cabCode"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.cabCode"></span>
