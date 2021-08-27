@@ -774,7 +774,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
   }
 
   // loadknowledgeExperience() {
-  //   this.Service.getwithoutData('https://service.eiac.gov.ae/webservice/service_page/?data=inspection-bodies')
+  //   this.Service.getwithoutData('https://uat-service.eiac.gov.ae/webservice/service_page/?data=inspection-bodies')
   //   .subscribe(
   //     res => {
   //       this.schemeMainData = res['schemeData'];
