@@ -292,14 +292,14 @@ export class TrainersDashboardComponent implements OnInit {
 
     // this.select_field = [
     //   { field: 'Internal Operations', value: 'Internal Operations' },
-    //   { field: 'CAB Code', value: 'CAB Code' },
+    //   { field: 'Customer ID', value: 'Customer ID' },
     //   { field: 'Candidate', value: 'Candidate' },
     // ];
     this.getUserType = 'cab_client';
     this.select_field = [
       { field: 'Internal Operations', value: 'Internal Operations' },
       { field: 'CAB Name', value: 'CAB Name' },
-      { field: 'Customer ID', value: 'CAB Code' },
+      { field: 'Customer ID', value: 'Customer ID' },
       { field: 'Candidate', value: 'Candidate' }
     ];
 
@@ -402,7 +402,7 @@ export class TrainersDashboardComponent implements OnInit {
     if (this.selectedField == 'CAB Name') {
       this.getUserType = 'cab_client';
     }
-    if (this.selectedField == 'CAB Code') {
+    if (this.selectedField == 'Customer ID') {
       this.getUserType = 'cab_code';
     }
     if (this.selectedField == 'Candidate') {

@@ -726,7 +726,7 @@ export class AssessorsDashboardComponent implements OnInit {
     if (this.selectedField == 'CAB Name') {
       this.getUserType = 'cab_client';
     }
-    if (this.selectedField == 'CAB Code') {
+    if (this.selectedField == 'Customer ID') {
       this.getUserType = 'cab_code';
     }
     if (this.selectedField == 'Candidate') {

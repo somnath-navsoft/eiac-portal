@@ -656,7 +656,7 @@ export class AccountsComponent implements OnInit {
           }
         }
 
-        // //By Cab Code
+        // //By Customer ID
         if(sortBy == 'cabCode'){
           this.curSortDir.cabCode = !sortDir;
           if(this.curSortDir.cabCode){

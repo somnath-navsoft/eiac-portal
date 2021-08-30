@@ -63,7 +63,7 @@ export class MessageComponent implements OnInit {
     this.getUserType = 'cab_client';
     this.select_field = [
       { field: 'CAB Name', value: 'CAB Name' },
-      { field: 'Customer ID', value: 'CAB Code' },
+      { field: 'Customer ID', value: 'Customer ID' },
       { field: 'Candidate', value: 'Candidate' },
       { field: 'Trainer', value: 'Trainer' },
       { field: 'Assessor', value: 'Assessor' },
@@ -195,7 +195,7 @@ export class MessageComponent implements OnInit {
     if (this.selectedField == 'CAB Name') {
       this.getUserType = 'cab_client';
     }
-    if (this.selectedField == 'CAB Code') {
+    if (this.selectedField == 'Customer ID') {
       this.getUserType = 'cab_code';
     }
     if (this.selectedField == 'Candidate') {
