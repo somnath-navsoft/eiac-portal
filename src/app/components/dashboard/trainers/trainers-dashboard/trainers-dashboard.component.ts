@@ -299,7 +299,7 @@ export class TrainersDashboardComponent implements OnInit {
     this.select_field = [
       { field: 'Internal Operations', value: 'Internal Operations' },
       { field: 'CAB Name', value: 'CAB Name' },
-      { field: 'CAB Code', value: 'CAB Code' },
+      { field: 'Customer ID', value: 'CAB Code' },
       { field: 'Candidate', value: 'Candidate' }
     ];
 

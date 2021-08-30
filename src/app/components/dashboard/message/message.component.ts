@@ -63,7 +63,7 @@ export class MessageComponent implements OnInit {
     this.getUserType = 'cab_client';
     this.select_field = [
       { field: 'CAB Name', value: 'CAB Name' },
-      { field: 'CAB Code', value: 'CAB Code' },
+      { field: 'Customer ID', value: 'CAB Code' },
       { field: 'Candidate', value: 'Candidate' },
       { field: 'Trainer', value: 'Trainer' },
       { field: 'Assessor', value: 'Assessor' },
